@@ -10,7 +10,8 @@ This file has language specific execution code.
 For each language, there is a class which has two function - 'compile' and 'run'
     => compile function : this function will compile the code and return True is compilation
                        is successful.
-    => run function: this function will execute the code in isolate sandbox 
+    => run function: this function will execute the code in isolate sandbox
+    this is pratik
 """
 
 
@@ -29,7 +30,7 @@ class cpp:
                         " --time=" + str(config['cpp']['time_limit']) +
                         " --wall-time=" + str(config['cpp']['wall_time_limit']) +
                         " -b " + str(box_id) +
-                        "--dir=in=out:noexec -o output.txt -i input.txt -M meta.ini -r error.txt ./output",
+                        " -o output.txt -i input.txt -M meta.ini -r error.txt ./output",
                         shell=True)
 
 
@@ -49,3 +50,17 @@ class c:
                         " -b " + str(box_id) +
                         " -o output.txt -i input.txt -M meta.ini -r error.txt ./output",
                         shell=True)
+
+class py:
+    def compile(box_id):
+        return True
+    def run(box_id):
+                subprocess.call("isolate --run --cg -s --mem=" + str(config['c']['max_size']) +
+                                " --time=" + str(config['c']['time_limit']) +
+                                " --wall-time=" + str(config['c']['wall_time_limit']) +
+                                " -b " + str(box_id) +
+                                " --env=HOME=/home/user "+
+                                "-o output.txt -i input.txt -M meta.ini -r error.txt "+
+                                "/usr/bin/python3 code.py",
+                                shell=True)
+

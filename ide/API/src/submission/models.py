@@ -7,7 +7,7 @@ from django.db import models
 class Submission(models.Model):
     code = models.TextField(null=False)
     input = models.TextField(null=False)
-    langs = (('c', 'c'), ('c++', 'c++'))  # Choices for language
+    langs = (('c', 'c'), ('c++', 'c++'), ('py', 'py'))  # Choices for language
     language = models.CharField(max_length=9, choices=langs, default='c')
     statuses = (('queue', 'queue'), ('OK', 'OK'), ('CTE', 'CTE'), ('RTE', 'RTE'))  # Choices for status
     status = models.CharField(max_length=5, choices=statuses, default='queue')

@@ -1,5 +1,4 @@
 import base64
-import logging
 import time
 
 # 3rd party imports
@@ -21,63 +20,8 @@ conn = psycopg2.connect(database=settings['database']['name'],
                         port=settings['database']['port'])
 cur = conn.cursor()
 
-# connection to logger database
-connLog = psycopg2.connect(database=settings['loggerDatabase']['name'],
-                           user=settings['loggerDatabase']['username'],
-                           password=settings['loggerDatabase']['password'],
-                           host=os.environ.get('DB_HOST', 'localhost'),
-                           port=settings['loggerDatabase']['port'])
-curLog = connLog.cursor()
-
-# Logger configuration
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(message)s')
 
 
-class GeneralHandler(logging.Handler):
-    """
-    Logging Handler for all logs
-    """
-    global conn
-    global cur
-
-    def emit(self, record):
-        timestamp = str(time.strftime("%Y-%m-%d %H:%M:%S%z"))
-        log_entry = self.format(record)
-        level = record.levelname
-        query = """INSERT INTO submission_workergenerallog (time, level, message) VALUES (%s, %s, %s)"""
-        curLog.execute(query, (timestamp, level, log_entry))
-        connLog.commit()
-
-
-class ErrorHandler(logging.Handler):
-    """
-    Logging Handler for Error logs only
-    """
-    global conn
-    global cur
-
-    def emit(self, record):
-        timestamp = str(time.strftime("%Y-%m-%d %H:%M:%S%z"))
-        log_entry = self.format(record)
-        level = record.levelname
-        query = """INSERT INTO submission_workererrorlog (time, level, message) VALUES (%s, %s, %s)"""
-        curLog.execute(query, (timestamp, level, log_entry))
-        connLog.commit()
-
-
-# General Log Handler Configuration
-generalHandler = GeneralHandler()
-generalHandler.setFormatter(formatter)
-generalHandler.setLevel(logging.DEBUG)
-logger.addHandler(generalHandler)
-
-# General Log Handler Configuration
-errorHandler = ErrorHandler()
-errorHandler.setFormatter(formatter)
-errorHandler.setLevel(logging.ERROR)
-logger.addHandler(errorHandler)
 
 # connection to rabbitMQ
 credentials = pika.PlainCredentials(settings['taskQueue']['username'], settings['taskQueue']['password'])
@@ -172,7 +116,8 @@ def isolateInit(box_id, inputData, code, lang):
     """
     ext = {
         'cpp': 'cpp',
-        'c': 'c'
+        'c': 'c',
+        'py': 'py',
     }
     # initialize box for isolate module
     subprocess.call("isolate --cleanup -b " + str(box_id), shell=True)
@@ -201,10 +146,8 @@ def callback(ch, method, properties, body):
         code = base64.b64decode(row[0]).decode()
         inputData = base64.b64decode(row[1]).decode()
         language = row[2]
-        logger.info('SUB ID: {} Code fetched from the database.'.format(uid))
     except:
         # if submission is not present in the database
-        logger.error('SUB ID: {} Submission ID not present in database'.format(uid))
         print("Submission ID not present in database", flush=True)
         return
     isolateInit(box_id, inputData, code, language)
@@ -214,16 +157,17 @@ def callback(ch, method, properties, body):
     if language == 'c':
         compileCode = getattr(c, 'compile')
         runCode = getattr(c, 'run')
-    logger.info("SUB ID: {} Compilation started.".format(uid))
+    if language == 'py':
+        compileCode = getattr(py, 'compile')
+        runCode = getattr(py, 'run')
+
     isCompile = compileCode(box_id)
     print('Compiling Code...', flush=True)
     if not isCompile:
-        logger.error("SUB ID: {} Compilation Error".format(uid))
         print("Compilation Error", flush=True)
         status = 'CTE'
         updateDatabase(uid, status, box_id, 'NULL')
     else:
-        logger.info("SUB ID: {} Compilation Complete".format(uid))
         print('Compiling Complete', flush=True)
         print('Running Code....', flush=True)
         print(box_id, flush=True)
@@ -233,31 +177,26 @@ def callback(ch, method, properties, body):
             # some error
             if meta['status'] == 'TO':
                 # Time Limit Exceeded
-                logger.error("SUB ID: {} Time Limit Exceeded".format(uid))
                 status = 'TLE'
                 print('TLE', flush=True)
                 updateDatabase(uid, status, box_id, meta)
             elif meta['status'] == 'RE':
                 # Runtime Error
-                logger.error("SUB ID: {} Run Time Error".format(uid))
                 status = 'RTE'
                 print('RTE', flush=True)
                 updateDatabase(uid, status, box_id, meta)
             elif meta['status'] == 'SG':
                 # Program Exited with non-zero signal
-                logger.error("SUB ID: {} Program Exited with non-zero signal".format(uid))
                 status = 'SG'
                 print('SG', flush=True)
                 updateDatabase(uid, status, box_id, meta)
             elif meta['status'] == 'XX':
-                logger.error('SUB ID: {} Sandbox Error'.format(uid))
                 # Sandbox error
                 status = 'XX'
                 print('XX', flush=True)
                 updateDatabase(uid, status, box_id, meta)
         else:
             # ALl OKAY!
-            logger.info('SUB ID: {} Program ran successfully'.format(uid))
             status = 'OK'
             print('OK', flush=True)
             updateDatabase(uid, status, box_id, meta)

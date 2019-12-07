@@ -28,7 +28,7 @@ services:
 
 
   apiserver:
-    image: tecknackdocker1/api
+    image: flameslayer/fdc_api
     command: postgres:5432 taskq:5672 taskq:15672
     environment:
       - DB_HOST=postgres # djangojudgeserver_backnet e84fa402411f
@@ -43,7 +43,7 @@ services:
 
 
   worker:
-    image: tecknackdocker1/isolate
+    image: flameslayer/fdc_worker
     command: curl -s apiserver:8000
     environment:
       - DB_HOST=postgres

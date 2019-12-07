@@ -31,8 +31,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'sslserver',
     'corsheaders',
-    'submission',
-    'logger'    
+    'submission'
+
 ]
 
 MIDDLEWARE = [
@@ -43,8 +43,8 @@ MIDDLEWARE = [
     # 'django.middleware.csrf.CsrfViewMiddleware',    # CSRF disabled temporarily
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'middlewares.logger.RequestLogMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -86,61 +86,14 @@ DATABASES = {
         'PASSWORD': os.environ.get('DB_PWD', 'django_1234'),
         'HOST': os.environ.get('DB_HOST', '172.17.0.2'),
         'PORT': os.environ.get('DB_PORT', '5432'),
-    },
-    'logger': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DB_NAME', 'logger'),
-        'USER': os.environ.get('DB_USER', 'djangoconn'),
-        'PASSWORD': os.environ.get('DB_PWD', 'django_1234'),
-        'HOST': os.environ.get('DB_HOST', '172.17.0.2'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
     }
+
 }
 
-DATABASE_ROUTERS = ['logger.router.LogRouter']
 
 # LOGGING_CONFIG = None
 
-LOGGING = {
-    'version': 1,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-            'style': '{',
-        },
-        'simple': {
-            'format': '{levelname} {message}',
-            'style': '{',
-        },
-    },
-    'handlers': {
-        'default': {
-            'level': 'INFO',
-            'class': 'logger.handlers.DBHandler',
-            'model': 'logger.models.GeneralLog',
-            'expiry': 86400,
-            'formatter': 'verbose'
-        },
-        'db': {
-            'level': 'INFO',
-            'class': 'logger.handlers.DBHandler',
-            'model': 'logger.models.SpecialLog',
-            'expiry': 86400,
-        },
-    },
-    'loggers': {
-        'customLog': {
-            'level': 'INFO',
-            'handlers': ['db'],
-            'propagate': True,
-        },
-        'django': {
-            'level': 'INFO',
-            'handlers': ['default'],
-            'propagate': True,
-        },
-    }
-}
+
 
 
 # Password validation

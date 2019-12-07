@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const csv = require('csvtojson');
+const ejs = require('ejs');
 let dbconn = false;
 
 mongoose.connect('mongodb+srv://user1:DNlP4zZPgpJNgJux@cluster0-mujak.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
@@ -109,8 +110,32 @@ app.post('/api/ladder', verifyToken,(req, res)=>{
     });
 
 
+});
 
+
+app.set('view engine','ejs');
+app.use('/assets', express.static('assets'));
+
+app.get('/', (req, res)=>{
+    res.render('home');
+});
+
+
+app.get('/login', (req, res)=>{
+    res.render('login');
+});
+
+app.get('/register', (req, res)=>{
+    res.render('register');
+});
+
+app.get('/ladder', (req, res)=>{
+    csv().fromFile('ps.csv').then((jsonObj)=>{
+        //console.log(jsonObj)
+        res.render('ladder', {que: jsonObj[parseInt(req.query.id)]});
+    });
 
 });
+
 if (app.listen(8888))
     console.log("Listening on port 8000");

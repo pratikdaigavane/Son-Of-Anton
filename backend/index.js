@@ -39,11 +39,19 @@ function verifyToken(req, res, next) {
 
 
 app.post('/api/login', (req, res) => {
-    var user = new User({username: 'admin', password: 'admin'});
-    jwt.sign({user: user}, 'secretkey', (err, token) => {
-        res.json({token});
-    })
+    // var user = new User({username: req.body.username, password: req.body.password});
+    User.findOne({username: req.body.username, password: req.body.password}).then((result)=>{
+        if(result){
+            console.log(result);
+            jwt.sign({user: result}, 'secretkey', (err, token) => {
+                res.json({token});
+            })
+        }else
+            res.status(400).json({status: 'invalid_username_password'});
+    });
 });
+
+
 
 app.post('/api/register', (req, res) => {
         console.log(req.body);
@@ -51,7 +59,8 @@ app.post('/api/register', (req, res) => {
             name: req.body.name,
             username: req.body.username,
             password: req.body.password,
-            cf_handle: req.body.cf_handle
+            cf_handle: req.body.cf_handle,
+            rating: 1500
         });
 
 

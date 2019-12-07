@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-
+const csv = require('csvtojson');
 let dbconn = false;
 
 mongoose.connect('mongodb+srv://user1:DNlP4zZPgpJNgJux@cluster0-mujak.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
@@ -19,6 +19,7 @@ var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 
 const User = require('./models/user');
+const que = require('./models/questions');
 
 function verifyToken(req, res, next) {
     const bearerHeader = req.headers['authorization'];
@@ -88,5 +89,28 @@ app.get('/api/testlogin', verifyToken, (req, res) => {
     res.end("OK");
 });
 
-if (app.listen(8000))
+app.post('/api/ladder', verifyToken,(req, res)=>{
+
+    let username = req.user.name;
+    let currProb = req.user.ladder_current;
+    currProb=7;
+    let resp = {
+        ques: [],
+        curr: currProb
+    };
+    csv().fromFile('ps.csv').then((jsonObj)=>{
+        //console.log(jsonObj)
+        for(let i=0;i<currProb;i++)
+        {
+            resp.ques.push(jsonObj[i]);
+        }
+        console.log(resp.ques);
+        res.json(resp);
+    });
+
+
+
+
+});
+if (app.listen(8888))
     console.log("Listening on port 8000");

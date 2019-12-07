@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="035f35ba-95c1-4425-86e4-ed9cb3dcd219" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../API/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/../API/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../API/src/judge/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/../API/src/judge/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/langs.py" beforeDir="false" afterPath="$PROJECT_DIR$/langs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/worker.py" beforeDir="false" afterPath="$PROJECT_DIR$/worker.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1TovKzFENyWTsJanqRE8ol3bPbU" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="035f35ba-95c1-4425-86e4-ed9cb3dcd219" name="Default Changelist" comment="" />
+      <created>1574139202936</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1574139202936</updated>
+      <workItem from="1574139207870" duration="4126000" />
+      <workItem from="1574153251416" duration="151000" />
+      <workItem from="1574346654412" duration="2173000" />
+      <workItem from="1574366416230" duration="4000" />
+      <workItem from="1574394228236" duration="11587000" />
+      <workItem from="1574521866651" duration="2594000" />
+      <workItem from="1574569505169" duration="640000" />
+      <workItem from="1575557431183" duration="88000" />
+      <workItem from="1575558441129" duration="9000" />
+      <workItem from="1575613596553" duration="90000" />
+      <workItem from="1575623388705" duration="13000" />
+      <workItem from="1575630607132" duration="602000" />
+      <workItem from="1575689657496" duration="1211000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="576" y="342" key="com.intellij.ide.util.TipDialog" timestamp="1575689657645">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="576" y="342" key="com.intellij.ide.util.TipDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1575689657645" />
+  </component>
+</project>

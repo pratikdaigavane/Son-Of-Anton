@@ -1,0 +1,19 @@
+{
+  "database": {
+    "name": "submissions",
+    "username": "djangoconn",
+    "password": "django_1234",
+    "port": 5432
+  },
+  "taskQueue": {
+    "name": "task_queue",
+    "username": "guest",
+    "password": "guest"
+  },
+  "loggerDatabase": {
+    "name": "submissions",
+    "username": "djangoconn",
+    "password": "django_1234",
+    "port": 5432
+  }
+}

@@ -1,0 +1,16 @@
+{
+    "cpp":{
+        "lang_code": "cpp",
+        "max_stack_size": 268435456,
+        "max_size": 256000,
+        "time_limit": 4,
+        "wall_time_limit": 10
+    },
+    "c":{
+        "lang_code": "c",
+        "max_stack_size": 268435456,
+        "max_size": 256000,
+        "time_limit": 4,
+        "wall_time_limit": 10
+    }
+}

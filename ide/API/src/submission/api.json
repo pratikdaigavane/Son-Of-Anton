@@ -1,0 +1,101 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Code compiler API for Interview Mocha",
+    "version" : "1.0.0",
+    "title" : "Mocha Compiler",
+    "contact" : {
+      "email" : "you@your-company.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host" : "13.67.32.60:8000",
+  "basePath" : "/",
+  "tags" : [ {
+    "name" : "developers",
+    "description" : "Operations available to regular developers"
+  } ],
+  "schemes" : [ "http" ],
+  "paths" : {
+    "/check/{SubID}" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "Returns data for submissionID",
+        "description" : "Returns data for submissionID",
+        "operationId" : "check",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "SubID",
+          "in" : "path",
+          "description" : "SubmissionID",
+          "required" : true,
+          "type" : "number"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Details of given SubID",
+            "schema" : {
+              "type" : "object"
+            }
+          }
+        }
+      }
+    },
+    "/submit" : {
+      "post" : {
+        "tags" : [ "developers" ],
+        "summary" : "Adds a submission to compile and run",
+        "description" : "Adds a submission to compile and run",
+        "operationId" : "submit",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "SubID",
+          "description" : "SubmissionID",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/Submit"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "success",
+            "schema" : {
+              "type" : "number"
+            }
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          },
+          "500" : {
+            "description" : "server error"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Submit" : {
+      "type" : "object",
+      "required" : [ "code", "input", "language" ],
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "example" : "print(\"Hello\")"
+        },
+        "input" : {
+          "type" : "string",
+          "example" : "1 3 5 7"
+        },
+        "language" : {
+          "type" : "string",
+          "example" : "c++"
+        }
+      }
+    }
+  }
+}

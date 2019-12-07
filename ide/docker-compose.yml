@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=djangoconn
+      - POSTGRES_PASSWORD=django_1234
+      - POSTGRES_DB=submissions
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - /home/InterviewMocha/database:/var/lib/postgresql/data
+    networks:
+      - backnet
+    ports:
+      - 5432:5432 # temp
+
+
+  taskq:
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=1234567890
+    networks:
+      - backnet
+    ports:
+      - 15672:15672
+      - 5672:5672 # temp
+
+
+  apiserver:
+    image: tecknackdocker1/api
+    command: postgres:5432 taskq:5672 taskq:15672
+    environment:
+      - DB_HOST=postgres # djangojudgeserver_backnet e84fa402411f
+      - RABBITMQ_HOST=taskq
+      - SLEEP_LENGTH=5
+    networks:
+      - backnet
+    ports:
+      - 8000:8000
+
+
+
+
+  worker:
+    image: tecknackdocker1/isolate
+    command: curl -s apiserver:8000
+    environment:
+      - DB_HOST=postgres
+      - RABBITMQ_HOST=taskq
+    networks:
+      - backnet
+    privileged: true
+    restart: on-failure
+
+
+networks:
+  backnet:
+
+# docker run -d -e POSTGRES_USER=djangoconn -e POSTGRES_PASSWORD=django_1234 -e POSTGRES_DB=submissions -e PGDATA=/var/lib/postgresql/data/pgdata --name=postgres1 --hostname=postgres1 -v /home/pratham/Projects/InterviewMocha/database:/var/lib/postgresql/data postgres
+# docker run -it --name=DjangoServer --hostname=DjangoServer --network=host -p 8888:8000 pnshiralkar/imjudgeserver
+# docker run -d --network=backnet -e RABBITMQ_ERLANG_COOKIE=1234567890D --name=taskq --hostname=taskq -p 5672:5672 -p 15672:15672 rabbitmq:3-management

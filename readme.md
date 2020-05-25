@@ -1,8 +1,3 @@
-# Pied Piper Coding Academy
-
-![Hooli Sucks](https://preview.redd.it/ysus5au2sf241.jpg?width=640&height=568&crop=smart&auto=webp&s=0aa5a344f129fa481f27c0b6550f40432d7985df)
-
-
-अपुन ही भगवान है ।
-
-A2OJ a  platform for competitive coders
+# MLH local Hack Day 
+A2OJ a  platform for competitive coders .
+# Pied Piper Coding Academy 
